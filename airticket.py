@@ -4,7 +4,7 @@ from mysql.connector import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'secret'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-fallback-key')
 
 conn = mysql.connector.connect(
     host='localhost',
