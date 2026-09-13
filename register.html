@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        h3 {
+            color: #2a5298;
+            margin-top: 20px;
+        }
+
+        h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #1e3c72;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42,82,152,0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        .section {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row input {
+            width: 100%;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+    function toggleFields() {
+        let role = document.getElementById("role").value;
+
+        const customer = document.getElementById("customerFields");
+        const agent = document.getElementById("agentFields");
+        const staff = document.getElementById("staffFields");
+
+        customer.style.display = "none";
+        agent.style.display = "none";
+        staff.style.display = "none";
+
+        document.querySelectorAll("#customerFields input, #agentFields input, #staffFields input")
+            .forEach(input => input.required = false);
+
+        if (role === "customer") {
+            customer.style.display = "block";
+            document.querySelectorAll("#customerFields input")
+                .forEach(input => input.required = true);
+        } 
+        else if (role === "agent") {
+            agent.style.display = "block";
+            document.querySelectorAll("#agentFields input")
+                .forEach(input => input.required = true);
+        } 
+        else if (role === "staff") {
+            staff.style.display = "block";
+            document.querySelectorAll("#staffFields input")
+                .forEach(input => input.required = true);
+        }
+    }
+
+    window.onload = toggleFields;
+    </script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📝 Create Your Account</h2>
+
+    <form action="/registerAuth" method="POST">
+
+        <label>Email / Username</label>
+        <input name="username" required>
+
+        <label>Password</label>
+        <input name="password" type="password" required>
+
+        <label>Role</label>
+        <select name="role" id="role" onchange="toggleFields()">
+            <option value="customer">Customer</option>
+            <option value="agent">Booking Agent</option>
+            <option value="staff">Airline Staff</option>
+        </select>
+
+        <!-- CUSTOMER -->
+        <div id="customerFields" class="section">
+            <h3>👤 Customer Info</h3>
+
+            <label>Name</label>
+            <input name="name">
+
+            <h4>📍 Address</h4>
+
+            <div class="row">
+                <div>
+                    <label>Building No</label>
+                    <input name="building_number">
+                </div>
+                
+                <div>
+                    <label>Street</label>
+                    <input name="street">
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>City</label>
+                    <input name="city">
+                </div>
+
+                <div>
+                    <label>State</label>
+                    <input name="state">
+                </div>
+            </div>
+
+            <label>Phone Number</label>
+            <input name="phone_number">
+
+            <h4>🛂 Passport</h4>
+
+            <label>Passport Number</label>
+            <input name="passport_number">
+
+            <label>Passport Expiration Date</label>
+            <input name="passport_expiration_date" type="date">
+
+            <label>Passport Country</label>
+            <input name="passport_country">
+
+            <label>Date of Birth</label>
+            <input name="date_of_birth" type="date">
+        </div>
+
+        <!-- AGENT -->
+        <div id="agentFields" class="section" style="display:none;">
+            <h3>💼 Booking Agent Info</h3>
+            <label>Authorization Key</label>
+            <input name="agent_key">
+        </div>
+
+        <!-- STAFF -->
+        <div id="staffFields" class="section" style="display:none;">
+            <h3>🛠 Airline Staff Info</h3>
+
+            <label>First Name</label>
+            <input name="first_name">
+
+            <label>Last Name</label>
+            <input name="last_name">
+
+            <label>Date of Birth</label>
+            <input name="date_of_birth" type="date">
+
+            <label>Airline Name</label>
+            <input name="airline">
+
+            <label>Authorization Key</label>
+            <input name="staff_key">
+        </div>
+
+        <button type="submit">Create Account</button>
+
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <a href="/">← Back</a>
+
+</div>
+
+</body>
+</html>

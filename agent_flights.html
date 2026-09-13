@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Booked Flights</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        .section {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f9fbff;
+            border-left: 5px solid #2a5298;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #2a5298;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr:nth-child(even) {
+            background: #f4f7fc;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>✈️ My Booked Flights</h2>
+
+    <div class="section">
+
+        <h3>Filter Flights</h3>
+
+        <form method="POST">
+            <input type="date" name="start_date">
+            <input type="date" name="end_date">
+            <input name="departure_airport" placeholder="Departure Airport">
+            <input name="arrival_airport" placeholder="Arrival Airport">
+            <button>Filter</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>Customer</th>
+                <th>Flight</th>
+                <th>Airline</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Price</th>
+                <th>Status</th>
+            </tr>
+
+            {% for f in flights %}
+            <tr>
+                <td>{{ f.customer_name }}</td>
+                <td>{{ f.flight_num }}</td>
+                <td>{{ f.airline_name }}</td>
+                <td>{{ f.departure_time }}</td>
+                <td>{{ f.arrival_time }}</td>
+                <td>{{ f.departure_airport }}</td>
+                <td>{{ f.arrival_airport }}</td>
+                <td>{{ f.price }}</td>
+                <td>{{ f.status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+    <a class="back" href="/home">← Back</a>
+
+</div>
+
+</body>
+</html>

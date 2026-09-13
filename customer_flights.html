@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Flights</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        .flight-card {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .flight-card b {
+            color: #1e3c72;
+        }
+
+        .empty {
+            text-align: center;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        .email {
+            text-align: center;
+            color: #2a5298;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>👤 Customer Flights</h2>
+
+    <div class="email">
+        Flights for: <b>{{ name }}</b>
+    </div>
+
+    {% if flights %}
+        {% for f in flights %}
+        <div class="flight-card">
+            <b>Flight:</b> {{ f.flight_num }} <br>
+            Airline: {{ f.airline_name }} <br>
+            Route: {{ f.departure_airport }} → {{ f.arrival_airport }} <br>
+            Departure: {{ f.departure_time }} <br>
+            Arrival: {{ f.arrival_time }} <br>
+            Status: {{ f.status }}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty">No flights found for this customer on your airline</p>
+    {% endif %}
+
+    <a class="back" href="/home">← Back</a>
+
+</div>
+
+</body>
+</html>

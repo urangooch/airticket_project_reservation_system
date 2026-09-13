@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Ticket System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 420px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3c72;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        .secondary {
+            background: #f4f7fc;
+            color: #1e3c72;
+            border: 2px solid #2a5298;
+        }
+
+        .secondary:hover {
+            background: #e6eeff;
+        }
+
+        .small {
+            font-size: 12px;
+            margin-top: 15px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>✈️ Welcome to Air Ticket System</h1>
+
+    <p>Search flights, manage bookings, and track your journey</p>
+
+    <a class="btn" href="/login">Login</a>
+    <a class="btn" href="/register">Register</a>
+
+    <a class="btn secondary" href="/search">Search Flights</a>
+
+    <div class="small">
+        Flight Management System for both Customer, Airline, and Agents
+    </div>
+
+</div>
+
+</body>
+</html>

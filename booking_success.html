@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking Confirmed</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 450px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 60px;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        .secondary {
+            background: #f4f7fc;
+            color: #1e3c72;
+            border: 2px solid #2a5298;
+        }
+
+        .secondary:hover {
+            background: #e6eeff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <div class="icon">✔</div>
+
+    <h2>Booking Confirmed!</h2>
+
+    <p>Your flight has been successfully booked.</p>
+
+    {% if flight_num %}
+    <div class="info-box">
+        ✈️ Flight: {{ flight_num }} <br>
+        Airline: {{ airline_name }}
+    </div>
+    {% else %}
+    <div class="info-box">
+        🎟️ Your booking is now saved in the system
+    </div>
+    {% endif %}
+
+    {% if session['role'] == 'agent' %}
+        <a class="btn" href="/agent_flights">View My Booked Flights</a>
+    {% else %}
+        <a class="btn" href="/myflights">View My Flights</a>
+    {% endif %}
+    <a class="btn secondary" href="/home">Back to Home</a>
+
+</div>
+
+</body>
+</html>

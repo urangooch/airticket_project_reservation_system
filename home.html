@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        h3, h4 {
+            color: #2a5298;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f9fbff;
+            border-left: 5px solid #2a5298;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 5px 5px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #2a5298;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr:nth-child(even) {
+            background: #f4f7fc;
+        }
+
+        .logout {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div style="
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+">
+
+    <h2 style="margin: 0; color: white; ">👋 Welcome {{ name }}</h2>
+
+    {% if role == 'staff' %}
+        <p style="margin: 8px 0 0 0;">
+            ✈️ Airline: <b>{{ session.airline }}</b>
+        </p>
+
+        <p style="margin: 5px 0 0 0;">
+            🛠 Role:
+            {% if 'admin' in session.permissions %}
+                <b>Admin</b>
+            {% elif 'operator' in session.permissions %}
+                <b>Operator</b>
+            {% else %}
+                <b>Staff</b>
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if role == 'agent' %}
+        <p style="margin: 8px 0 0 0;">
+            💼 Booking Agent
+        </p>
+
+        <p style="margin: 5px 0 0 0;">
+            ✈️ Authorized Airline:
+            <b>{{ session.airline }}</b>
+        </p>
+    {% endif %}
+
+    {% if role == 'customer' %}
+        <p style="margin: 8px 0 0 0;">
+            👤 Customer Account
+        </p>
+    {% endif %}
+
+</div>
+
+    <!-- NAVIGATION CARDS -->
+    <div class="grid">
+        <div class="card"><a href="/search">✈️ Search Flights</a></div>
+        <div class="card"><a href="/status">📡 Flight Status</a></div>
+
+        {% if role == 'customer' %}
+        <div class="card"><a href="/spending">💰 My Spending</a></div>
+        <div class="card"><a href="/myflights">✈️ My Flights</a></div>
+        {% endif %}
+
+        {% if role == 'agent' %}
+        <div class="card"><a href="/agent_analytics">📊 My Analytics</a></div>
+        <div class="card"><a href="/agent_flights">✈️ My Booked Flights</a></div>
+        {% endif %}
+
+        {% if role == 'staff' %}
+        <div class="card"><a href="/staff">🛠 Staff Panel</a></div>
+        <div class="card"><a href="/admin_analytics">📊 Dashboard</a></div>
+        {% endif %}
+    </div>
+
+    <!-- STAFF SECTION -->
+    {% if role == 'staff' %}
+    <div class="section">
+
+        <h3>✈️ My Airline Flights (Next 30 Days)</h3>
+
+        <!-- FILTER -->
+        <form method="POST">
+            <input type="date" name="start_date">
+            <input type="date" name="end_date">
+            <input name="departure_airport" placeholder="Departure Airport">
+            <input name="arrival_airport" placeholder="Arrival Airport">
+            <button>Filter</button>
+        </form>
+
+        <!-- TABLE -->
+        <table>
+            <tr>
+                <th>Flight</th>
+                <th>Airline</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Airplane</th>
+                <th>Passengers</th>
+            </tr>
+
+            {% for f in flights %}
+            <tr>
+                <td>{{ f[0] }}</td>
+                <td>{{ f[1] }}</td>
+                <td>{{ f[2] }}</td>
+                <td>{{ f[3] }}</td>
+                <td>{{ f[4] }}</td>
+                <td>{{ f[5] }}</td>
+                <td>{{ f[6] }}</td>
+                <td>{{ f[7] }}</td>
+                <td>{{ f[8] }}</td>
+
+                <td>
+                    <form action="/passengers" method="POST">
+                        <input type="hidden" name="flight_num" value="{{ f[0] }}">
+                        <input type="hidden" name="airline_name" value="{{ f[1] }}">
+                        <button type="submit">View</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- CUSTOMER LOOKUP -->
+        <h4 style="margin-top: 20px;">👤 View Customer Flights</h4>
+        <form action="/customer_flights" method="GET">
+            <input name="customer_email" placeholder="Customer Email" required>
+            <button>View</button>
+        </form>
+
+    </div>
+    {% endif %}
+
+    <a class="logout" href="/logout">🚪 Logout</a>
+
+</div>
+
+</body>
+</html>

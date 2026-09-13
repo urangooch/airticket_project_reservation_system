@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agent Analytics</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        h3 {
+            color: #2a5298;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        /* 🔥 chart sizing */
+        .chart-container {
+            width: 70%;
+            height: 250px;
+            margin: 0 auto;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📊 Agent Analytics</h2>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="card">
+            Total Commission (30 days)
+            <div class="value">{{ total_commission }}</div>
+        </div>
+
+        <div class="card">
+            Average Commission
+            <div class="value">{{ avg_commission }}</div>
+        </div>
+
+        <div class="card">
+            Tickets Sold
+            <div class="value">{{ tickets_sold }}</div>
+        </div>
+    </div>
+
+    <!-- CHART 1 -->
+    <div class="section">
+        <h3>🏆 Top 5 Customers (Tickets - Last 6 Months)</h3>
+        <div class="chart-container">
+            <canvas id="ticketsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- CHART 2 -->
+    <div class="section">
+        <h3>💰 Top 5 Customers (Commission - Last Year)</h3>
+        <div class="chart-container">
+            <canvas id="commissionChart"></canvas>
+        </div>
+    </div>
+
+    <a class="back" href="/home">← Back</a>
+
+</div>
+
+<!-- DATA FROM FLASK -->
+<script>
+    const ticketLabels = {{ top_customers_tickets | map(attribute=0) | list | tojson }};
+    const ticketData = {{ top_customers_tickets | map(attribute=1) | list | tojson }};
+
+    const commissionLabels = {{ top_customers_commission | map(attribute=0) | list | tojson }};
+    const commissionData = {{ top_customers_commission | map(attribute=1) | list | tojson }};
+</script>
+
+<!-- CHARTS -->
+<script>
+    // 🎯 TICKETS CHART
+    new Chart(document.getElementById('ticketsChart'), {
+        type: 'bar',
+        data: {
+            labels: ticketLabels, 
+            datasets: [{
+                label: 'Tickets',
+                data: ticketData,   
+                backgroundColor: '#2a5298',
+                barPercentage: 0.5,
+                categoryPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Customers'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Tickets Purchased'
+                    },
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+    // 🎯 COMMISSION CHART
+    new Chart(document.getElementById('commissionChart'), {
+        type: 'bar',
+        data: {
+            labels: commissionLabels,  
+            datasets: [{
+                label: 'Commission',
+                data: commissionData,   
+                backgroundColor: '#1e3c72',
+                barPercentage: 0.5,
+                categoryPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Customers'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Commission Earned'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

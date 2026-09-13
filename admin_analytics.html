@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        h2 {
+            color: #2a5298;
+            margin-top: 30px;
+        }
+
+        .card {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f4f7fc;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 5px solid #2a5298;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #2a5298;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f6ff;
+        }
+
+        tr:hover {
+            background: #e6eeff;
+        }
+
+        .highlight {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📊 Admin / Operator Analytics</h1>
+
+    <!-- Top Agents by Tickets -->
+    <h2>Top Booking Agents (Tickets Sold)</h2>
+    <div class="card">
+        <table>
+            <tr><th>Agent</th><th>Tickets</th></tr>
+            {% for a in agents_tickets %}
+            <tr>
+                <td>{{ a[0] }}</td>
+                <td>{{ a[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Top Agents by Commission -->
+    <h2>Top Booking Agents (Commission)</h2>
+    <div class="card">
+        <table>
+            <tr><th>Agent</th><th>Commission</th></tr>
+            {% for a in agents_commission %}
+            <tr>
+                <td>{{ a[0] }}</td>
+                <td>{{ a[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Top Customer -->
+    <h2>Most Frequent Customer (Last Year)</h2>
+    <div class="card">
+        {% if top_customer %}
+        <p class="highlight">
+            {{ top_customer[0][0] }} — {{ top_customer[0][1] }} flights
+        </p>
+        {% else %}
+        <p>No data</p>
+        {% endif %}
+    </div>
+
+    <!-- Monthly Tickets -->
+    <h2>Tickets Sold Per Month</h2>
+    <div class="card">
+        <table>
+            <tr><th>Month</th><th>Tickets</th></tr>
+            {% for m in monthly_tickets %}
+            <tr>
+                <td>{{ m[0] }}</td>
+                <td>{{ m[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Delay Stats -->
+    <h2>Delay vs On-Time Flights</h2>
+    <div class="card">
+        <table>
+            <tr><th>Status</th><th>Count</th></tr>
+            {% for d in delay_stats %}
+            <tr>
+                <td>{{ d[0] }}</td>
+                <td>{{ d[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Top Destinations 3 Months -->
+    <h2>Top Destinations (Last 3 Months)</h2>
+    <div class="card">
+        <table>
+            <tr><th>Airport</th><th>Flights</th></tr>
+            {% for d in top_3m %}
+            <tr>
+                <td>{{ d[0] }}</td>
+                <td>{{ d[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Top Destinations 1 Year -->
+    <h2>Top Destinations (Last Year)</h2>
+    <div class="card">
+        <table>
+            <tr><th>Airport</th><th>Flights</th></tr>
+            {% for d in top_1y %}
+            <tr>
+                <td>{{ d[0] }}</td>
+                <td>{{ d[1] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <a class="back" href="/home">← Back</a>
+
+</div>
+
+</body>
+</html>

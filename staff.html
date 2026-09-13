@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Panel</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 85%;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        h3 {
+            color: #2a5298;
+            margin-top: 25px;
+        }
+
+        .section {
+            background: #f4f7fc;
+            border-left: 5px solid #2a5298;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 5px rgba(42,82,152,0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #1e3c72, #16325c);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #1e3c72;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🛠 Staff Panel</h2>
+
+    <div class="grid">
+
+        <!-- ADMIN SECTION -->
+        {% if 'admin' in session.permissions %}
+        <div>
+
+            <h3>👑 Admin Controls</h3>
+
+            <div class="section">
+                <h4>Add Airport</h4>
+                <form action="/add_airport" method="POST">
+                    <input name="name" placeholder="Airport Name" required>
+                    <input name="city" placeholder="City Name" required>
+                    <button>Add</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h4>Add Airplane</h4>
+                <form action="/add_plane" method="POST">
+                    <input name="id" placeholder="Plane ID" required>
+                    <input name="airline_name" placeholder="Airline" required>
+                    <input name="capacity" placeholder="Capacity" required>
+                    <button>Add</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h4>Create Flight</h4>
+                <form action="/create_flight" method="POST">
+                    <input name="flight_num" placeholder="Flight Number" required>
+                    <input name="airline_name" placeholder="Airline" required>
+                    <input name="departure_airport" placeholder="Departure Airport" required>
+                    <input name="arrival_airport" placeholder="Arrival Airport" required>
+                    <input name="departure_time" placeholder="YYYY-MM-DD HH:MM:SS" required>
+                    <input name="arrival_time" placeholder="YYYY-MM-DD HH:MM:SS" required>
+                    <input name="price" placeholder="Price" required>
+
+                    <select name="status" required>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="in-progress">In-Progress</option>
+                        <option value="delayed">Delayed</option>
+                    </select>
+
+                    <input name="airplane_id" placeholder="Airplane ID" required>
+
+                    <button>Create Flight</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h4>Assign Permission</h4>
+                <form action="/assign_permission" method="POST">
+                    <input name="staff_username" placeholder="Staff Username" required>
+
+                    <select name="permission">
+                        <option value="admin">Admin</option>
+                        <option value="operator">Operator</option>
+                    </select>
+
+                    <button>Assign</button>
+                </form>
+            </div>
+
+            <div class="section">
+                <h4>Authorize Booking Agent</h4>
+                <form action="/authorize_agent" method="POST">
+                    <input name="agent_email" placeholder="Agent Email" required>
+                    <input name="airline_name" value="{{ session.airline }}" readonly>
+                    <button>Authorize</button>
+                </form>
+            </div>
+
+        </div>
+        {% endif %}
+
+        <!-- Operator and admin -->
+        {% if 'operator' in session.permissions or 'admin' in session.permissions %}
+        <div>
+
+            <h3>⚙️ General Staff Controls</h3>
+
+            <div class="section">
+                <h4>Update Flight Status</h4>
+                <form action="/update_status" method="POST">
+                    <input name="flight" placeholder="Flight Number" required>
+
+                    <select name="status" required>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="in-progress">In-Progress</option>
+                        <option value="delayed">Delayed</option>
+                    </select>
+
+                    <button>Update</button>
+                </form>
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+
+    <a class="back" href="/home">← Back</a>
+
+</div>
+
+</body>
+</html>
